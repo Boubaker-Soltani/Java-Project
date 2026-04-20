@@ -1,8 +1,10 @@
-// Classe Employee ( تمثيل كلاس الموظف )
+// Class Employee ( تمثيل كلاس الموظف )
 // ======================================
+import java.time.LocalDate;
+
 public class Employee {
-    //  Attributs privés (خصائص خاصة - Encapsulation)
-    private static int counter = 1; // Compteur pour générer ID automatiquement (عداد لإنشاء ID)
+    // Private Attributs (خصائص خاصة - Encapsulation)
+    private static int counter = 1; // Counter to generate ID automatically (عداد لإنشاء ID)
     private int id;
     private String name;
     private String role;
@@ -15,10 +17,10 @@ public class Employee {
     //  Constructor (بناء الكائن)
     // ======================================
     public Employee(String name, String role, String phone, double salary) {
-        this.id = counter++; // ID automatique (تلقائي)
-        this.name = name;
-        this.role = role;
-        this.phone = phone;
+        this.id = counter++; // ID automatically (تلقائي)
+        this.setName(name);
+        this.setRole(role);
+        this.setPhone(phone);
         setSalary(salary); // validation
         this.hireDate = LocalDate.now(); // تاريخ التوظيف
         this.tasksCount = 0;
@@ -50,29 +52,29 @@ public class Employee {
         if (phone != null && phone.matches("\\d{8,}")) // au moins 8 chiffres
             this.phone = phone;
         else
-            System.out.println("❌ Numéro invalide / رقم غير صالح");
+            System.out.println("❌ Invalid phone number / رقم غير صالح");
     }
 
     public void setSalary(double salary) {
         if (salary >= 0)
             this.salary = salary;
         else
-            System.out.println("❌ Salaire invalide / راتب غير صالح");
+            System.out.println("❌ Invalid salary / راتب غير صالح");
     }
     // ======================================
-    //  Méthodes utiles (دوال مفيدة)
+    //  Usefull Methodes (دوال مفيدة)
     // ======================================
 
-    //  Ajouter tâche (إضافة مهمة)
+    //  Add task (إضافة مهمة)
     public void assignTask() {
         tasksCount++;
     }
-    //  Calcul salaire annuel (حساب الراتب السنوي)
+    //  Calculate annual salary (حساب الراتب السنوي)
     public double calculateAnnualSalary() {
         return salary * 12;
     }
 
-    //  Calcul bonus (حساب مكافأة حسب الأداء)
+    //  Calculate bonus (حساب مكافأة حسب الأداء)
     public double calculateBonus() {
         if (tasksCount >= 20) return salary * 0.20;
         if (tasksCount >= 10) return salary * 0.10;
@@ -83,21 +85,21 @@ public class Employee {
         setRole(newRole);
         salary += salary * (increasePercent / 100);
     }
-    //  Ancienneté (مدة العمل)
+    //  Seniority (مدة العمل)
     public int getYearsOfService() {
         return LocalDate.now().getYear() - hireDate.getYear();
     }
     // ======================================
-    //  Affichage (عرض المعلومات)
+    //  Display  (عرض المعلومات)
     // ======================================
     @Override
     public String toString() {
         return "ID: " + id +
-               "  Name: " + name +
-               "  Role: " + role +
-               " Phone: " + phone +
-               "  Salary: " + salary +
-               "  Tasks: " + tasksCount +
-               "  Hire Date: " + hireDate;
+               "\n Name: " + name +
+               "\n Role: " + role +
+               "\n Phone: " + phone +
+               "\n Salary: " + salary +
+               "\n Tasks: " + tasksCount +
+               "\n Hire Date: " + hireDate;
     }
 }
