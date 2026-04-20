@@ -21,7 +21,7 @@ public class Employee {
         this.setName(name);
         this.setRole(role);
         this.setPhone(phone);
-        setSalary(salary); // validation
+        this.setSalary(salary); // validation
         this.hireDate = LocalDate.now(); // تاريخ التوظيف
         this.tasksCount = 0;
     }
@@ -43,10 +43,14 @@ public class Employee {
     public void setName(String name) {
         if (name != null && !name.isEmpty())
             this.name = name;
+        else
+            this.name = "Unkown";
     }
     public void setRole(String role) {
         if (role != null && !role.isEmpty())
             this.role = role;
+        else
+            this.role = "Unkown";
     }
     public void setPhone(String phone) {
         if (phone != null && phone.matches("\\d{8,}")) // au moins 8 chiffres
@@ -95,11 +99,11 @@ public class Employee {
     @Override
     public String toString() {
         return "ID: " + id +
-               "\n Name: " + name +
-               "\n Role: " + role +
-               "\n Phone: " + phone +
-               "\n Salary: " + salary +
-               "\n Tasks: " + tasksCount +
-               "\n Hire Date: " + hireDate;
+               " | Name: " + name +
+               " | Role: " + role +
+               " | Phone: " + phone +
+               " | Salary: " + salary +
+               " | Tasks: " + tasksCount +
+               " | Hire Date: " + hireDate;
     }
 }
