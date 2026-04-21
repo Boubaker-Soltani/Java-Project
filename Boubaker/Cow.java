@@ -36,6 +36,6 @@ public class Cow extends Animal {
         if (this.isHealthy())
             return "🐄 Moo";
         else
-            return " Silence";
+            return " weak sound";
     }
 }
