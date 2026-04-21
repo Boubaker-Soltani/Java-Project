@@ -49,6 +49,6 @@ public class Sheep extends Animal {
         if (this.isHealthy())
             return "🐑 Baa";
         else
-            return " Silence";
+            return " weak sound";
     }
 }
