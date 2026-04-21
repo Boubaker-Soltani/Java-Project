@@ -1,107 +1,79 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-
-// ======================================
 // Classe Veterinarian (الطبيب البيطري)
 // ======================================
 public class Veterinarian {
-
     // ID automatique
     private static int counter = 1;
-
     private int id;
     private String name;
     private String phone;
     private String specialization; // نوع الحيوانات
     private int experienceYears;
-
-    // 📋 سجل الزيارات
+    // سجل الزيارات
     private ArrayList<String> visitHistory;
-
-    // 📅 المواعيد
+    //المواعيد
     private ArrayList<String> appointments;
-
-    // 📊 إحصائيات
+    // إحصائيات
     private int treatedAnimals;
     private int criticalCases;
-
     // ======================================
     // Constructor
-    // ======================================
     public Veterinarian(String name, String phone, String specialization, int experienceYears) {
         this.id = counter++;
         this.name = name;
         this.phone = phone;
         this.specialization = specialization;
         this.experienceYears = experienceYears;
-
         this.visitHistory = new ArrayList<>();
         this.appointments = new ArrayList<>();
         this.treatedAnimals = 0;
         this.criticalCases = 0;
     }
-
     // ======================================
-    // 🩺 تشخيص الحيوان
-    // ======================================
+    //  تشخيص الحيوان
     public String diagnose(Animal a) {
-
         int health = a.getHealthScore();
-
         if (health < 20) {
             criticalCases++;
-            return "🚨 Critical condition";
+            return " Critical condition";
         } else if (health < 50) {
             return "⚠ Needs treatment";
         } else {
-            return "✅ Healthy";
+            return " Healthy";
         }
     }
-
     // ======================================
-    // 💉 علاج الحيوان
+    // علاج الحيوان
    ======================================
     public void treatAnimal(Animal a, String medicine) {
-
         System.out.println("💉 Treating " + a.getName() + " with " + medicine);
-
         // تحسين الصحة
         a.improveHealth(25);
-
         treatedAnimals++;
-
         recordVisit(a, "Treatment with " + medicine);
     }
-
    ======================================
-    // 🚑 حالة طوارئ
+    //  حالة طوارئ
    ======================================
     public void emergency(Animal a) {
-        System.out.println("🚑 EMERGENCY for: " + a.getName());
-
+        System.out.println(" EMERGENCY for: " + a.getName());
         a.improveHealth(40);
         criticalCases++;
-
         recordVisit(a, "Emergency intervention");
     }
-
   ======================================
-    // 📝 تسجيل زيارة
+    // تسجيل زيارة
    ======================================
     private void recordVisit(Animal a, String action) {
         String record = LocalDate.now() + " | " + a.getName() + " | " + action;
         visitHistory.add(record);
     }
-
   ======================================
-    // 📅 إضافة موعد
-   ======================================
+    // اظافه الموعد
     public void addAppointment(String date, Animal a) {
         appointments.add(date + " -> " + a.getName());
     }
-
    ======================================
-    // 📜 عرض السجل
+    //عرض السجل
   ======================================
     public void showHistory() {
         System.out.println("=== Visit History ===");
@@ -111,7 +83,7 @@ public class Veterinarian {
     }
 
    ======================================
-    // 📅 عرض المواعيد
+    // عرض المواعيد
    ======================================
     public void showAppointments() {
         System.out.println("=== Appointments ===");
@@ -119,26 +91,23 @@ public class Veterinarian {
             System.out.println(a);
         }
     }
-
    ======================================
-    // 📊 إحصائيات
+    //  إحصائيات
    ======================================
     public void showStats() {
         System.out.println("Treated animals: " + treatedAnimals);
         System.out.println("Critical cases: " + criticalCases);
     }
-
   ======================================
-    // 🎓 مستوى البيطري
+    // مستوى البيطري
    ======================================
     public String getLevel() {
         if (experienceYears > 10) return "Expert";
         if (experienceYears > 5) return "Intermediate";
         return "Beginner";
     }
-
  ======================================
-    // 🔍 التحقق من التخصص
+    //  التحقق من التخصص
    ======================================
     public boolean canTreat(Animal a) {
         return a.getType().equalsIgnoreCase(specialization);
