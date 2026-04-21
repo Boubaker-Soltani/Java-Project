@@ -14,6 +14,7 @@ abstract class Animal {
     protected String purpose;
     protected boolean alive;
     protected LocalDate birthDate;
+    protected int healthScore;
 
     // ======================================
     // Constructor (بناء الكائن)
@@ -27,13 +28,16 @@ abstract class Animal {
         this.setPurpose(purpose);
 
         this.alive = true; // default state (الحيوان حي افتراضياً)
+        this.healthScore = 100; // default state (الحيوان سليم مبدئيا)
     }
 
     // ======================================
     // Abstract Method (دالة مجردة - لازم تتطبق في الأبناء)
     // ======================================
-    public abstract void makeSound();
 
+    public abstract String makeSound();
+    public abstract double getProduction();
+    
     // ======================================
     // Business Logic Methods (دوال منطق العمل)
     // ======================================
@@ -49,6 +53,10 @@ abstract class Animal {
             System.out.println("The Animal is healthy / الحيوان سليم");
         else
             System.out.println("⚠️ The Animal requires medical check / الحيوان يحتاج فحصا بيطريا");
+    }
+// Improve Animal health (تحسين صحة الحيوان)
+    public void improveHealth(int value){
+        this.healthScore += value;
     }
 
     // Check if animal can be sold (هل يمكن بيع الحيوان)
@@ -96,7 +104,13 @@ abstract class Animal {
     public int getId() { return id; }
     public String getPurpose() { return purpose; }
     public double getWeight() { return weight; }
-
+    // Calculate health score (حساب مستوى الصحة)
+    public int getHealthScore(){
+        if(!alive) this.healthScore = 0; //Animal is dead (الحيوان ميت)
+        if(weight < 100) this.healthScore -= 20;
+        if(getAge() > 10) this.healthScore -= 10;
+        return this.healthScore;
+    }
     // Calculate age (حساب العمر)
     public int getAge() {
         if (birthDate == null) return 0;
