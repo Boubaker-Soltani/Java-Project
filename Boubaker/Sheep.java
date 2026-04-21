@@ -1,3 +1,4 @@
+
 // Class Sheep (تمثيل الخروف)
 // ======================================
 import java.time.LocalDate;
@@ -13,14 +14,41 @@ public class Sheep extends Animal {
         super(birthDate, weight, "Barley", "meat, wool");
     }
 
+    private double calculateMeat() {
+        return this.weight * 0.40 * (getHealthScore() / 100.0); // Meat = %40 of weight
+    }
+
+    private double calculateWool() {
+        return this.weight * 0.05 * (getHealthScore() / 100.0); // %5 of weight
+    }
+
     // ======================================
-    // Override Method (صوت الخروف)
+    // Override Method
     // ======================================
+
+    // Production الانتاج
     @Override
-    public void makeSound() {
+    public double getProduction() {
+        // التحقق ان الحيوان حي
+        if (!alive) {
+            System.out.println("Sheep already dead.");
+            return 0;
+        }
+        if (getHealthScore() >= 50) {
+            this.alive = false;
+            return calculateMeat() + calculateWool();
+        }
+        // الحيوان في حالة حرجة لا يمكن التضحية به
+        System.out.println("⚠ Sheep in critical condition. Cannot sacrifice.");
+        return 0;
+    }
+
+    // صوت الخروف
+    @Override
+    public String makeSound() {
         if (this.isHealthy())
-            System.out.println("🐑 Baa");
+            return "🐑 Baa";
         else
-            System.out.println(" Silence");
+            return " Silence";
     }
 }
