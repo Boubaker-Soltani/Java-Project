@@ -35,6 +35,6 @@ public class Goat extends Animal {
         if (this.isHealthy())
             return "🐐 Maa";
         else
-            return " Silence";
+            return " weak sound";
     }
 }
