@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.time.LocalDate;;
+
 // Classe Veterinarian (الطبيب البيطري)
 // ======================================
 public class Veterinarian {
@@ -10,17 +13,18 @@ public class Veterinarian {
     private int experienceYears;
     // سجل الزيارات
     private ArrayList<String> visitHistory;
-    //المواعيد
+    // المواعيد
     private ArrayList<String> appointments;
     // إحصائيات
     private int treatedAnimals;
     private int criticalCases;
+
     // ======================================
     // Constructor
     public Veterinarian(String name, String phone, String specialization, int experienceYears) {
         this.id = counter++;
-        this.name = name;
-        this.phone = phone;
+        this.setName(name);
+        this.setPhone(phone);
         this.specialization = specialization;
         this.experienceYears = experienceYears;
         this.visitHistory = new ArrayList<>();
@@ -28,8 +32,28 @@ public class Veterinarian {
         this.treatedAnimals = 0;
         this.criticalCases = 0;
     }
+
     // ======================================
-    //  تشخيص الحيوان
+    // Setters (تعديل مع التحقق)
+    // ======================================
+    public void setName(String name) {
+        if (name != null && !name.isEmpty()) 
+            this.name = name;
+        else 
+            this.name = "Unknown";
+    }
+    public void setPhone(String phone) {
+        if (phone != null && phone.matches("\\d{8,}")) // au moins 8 chiffres
+            this.phone = phone;
+        else {
+            System.out.println("❌ Invalid phone number / رقم غير صالح");
+            this.phone = "Unknown";
+        }
+    }
+
+    // ======================================
+    // تشخيص الحيوان
+    // ======================================
     public String diagnose(Animal a) {
         int health = a.getHealthScore();
         if (health < 20) {
@@ -41,40 +65,45 @@ public class Veterinarian {
             return " Healthy";
         }
     }
+
     // ======================================
     // علاج الحيوان
-   ======================================
+    // ======================================
     public void treatAnimal(Animal a, String medicine) {
-        System.out.println("💉 Treating " + a.getName() + " with " + medicine);
+        System.out.println("💉 Treating " + a.getClass().getSimpleName() + " with " + medicine);
         // تحسين الصحة
         a.improveHealth(25);
         treatedAnimals++;
         recordVisit(a, "Treatment with " + medicine);
     }
-   ======================================
-    //  حالة طوارئ
-   ======================================
+
+    // ======================================
+    // حالة طوارئ
+    // ======================================
     public void emergency(Animal a) {
-        System.out.println(" EMERGENCY for: " + a.getName());
+        System.out.println(" EMERGENCY for: " + a.getClass().getSimpleName());
         a.improveHealth(40);
         criticalCases++;
         recordVisit(a, "Emergency intervention");
     }
-  ======================================
+
+    // ======================================
     // تسجيل زيارة
-   ======================================
+    // ======================================
     private void recordVisit(Animal a, String action) {
-        String record = LocalDate.now() + " | " + a.getName() + " | " + action;
+        String record = LocalDate.now() + " | " + a.getClass().getSimpleName() + " | " + action;
         visitHistory.add(record);
     }
-  ======================================
+
+    // ======================================
     // اظافه الموعد
     public void addAppointment(String date, Animal a) {
-        appointments.add(date + " -> " + a.getName());
+        appointments.add(date + " -> " + a.getClass().getSimpleName());
     }
-   ======================================
-    //عرض السجل
-  ======================================
+
+    // ======================================
+    // عرض السجل
+    // ======================================
     public void showHistory() {
         System.out.println("=== Visit History ===");
         for (String v : visitHistory) {
@@ -82,35 +111,40 @@ public class Veterinarian {
         }
     }
 
-   ======================================
+    // ======================================
     // عرض المواعيد
-   ======================================
+    // ======================================
     public void showAppointments() {
         System.out.println("=== Appointments ===");
         for (String a : appointments) {
             System.out.println(a);
         }
     }
-   ======================================
-    //  إحصائيات
-   ======================================
+
+    // ======================================
+    // إحصائيات
+    // ======================================
     public void showStats() {
         System.out.println("Treated animals: " + treatedAnimals);
         System.out.println("Critical cases: " + criticalCases);
     }
-  ======================================
+
+    // ======================================
     // مستوى البيطري
-   ======================================
+    // ======================================
     public String getLevel() {
-        if (experienceYears > 10) return "Expert";
-        if (experienceYears > 5) return "Intermediate";
+        if (experienceYears > 10)
+            return "Expert";
+        if (experienceYears > 5)
+            return "Intermediate";
         return "Beginner";
     }
- ======================================
-    //  التحقق من التخصص
-   ======================================
+
+    // ======================================
+    // التحقق من التخصص
+    // ======================================
     public boolean canTreat(Animal a) {
-        return a.getType().equalsIgnoreCase(specialization);
+        return a.getClass().getSimpleName().equalsIgnoreCase(specialization);
     }
 
     // ======================================
@@ -119,9 +153,9 @@ public class Veterinarian {
     @Override
     public String toString() {
         return "ID: " + id +
-               " | Name: " + name +
-               " | Specialization: " + specialization +
-               " | Experience: " + experienceYears +
-               " | Level: " + getLevel();
+                " | Name: " + name +
+                " | Specialization: " + specialization +
+                " | Experience: " + experienceYears +
+                " | Level: " + getLevel();
     }
 }
