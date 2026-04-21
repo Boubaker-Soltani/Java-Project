@@ -4,6 +4,7 @@
 import java.time.LocalDate;
 
 public class Cow extends Animal {
+    
     private double milkPerDay; // لتر حليب يوميا
     // ======================================
     // Constructor (بناء كائن البقرة)
