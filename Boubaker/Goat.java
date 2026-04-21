@@ -4,7 +4,8 @@
 import java.time.LocalDate;
 
 public class Goat extends Animal {
-    private double milkPerDay;
+    
+    private double milkPerDay; // لتر حليب يوميا
 
     // ======================================
     // Constructor (بناء كائن الماعز)
