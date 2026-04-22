@@ -1,27 +1,24 @@
 // Class Animal (تمثيل كلاس الحيوان - Abstract Class)
-// ======================================
-import java.time.LocalDate;
-
 abstract class Animal {
 
     // ======================================
     // Attributes (الخصائص)
     // ======================================
     protected static int counter = 1; // Counter for auto ID (عداد لإنشاء ID تلقائي)
-    private int id;
+    protected int id;
     protected double weight;
     protected String diet;
     protected String purpose;
     protected boolean alive;
-    protected LocalDate birthDate;
+    protected int age;
     protected int healthScore;
 
     // ======================================
     // Constructor (بناء الكائن)
     // ======================================
-    Animal(LocalDate birthDate, double weight, String diet, String purpose) {
+    Animal(double weight, int age, String diet, String purpose) {
         this.id = counter++; // assign unique ID (تعيين رقم معرف تلقائي)
-        this.birthDate = birthDate;
+        this.setAge(age);
 
         this.setWeight(weight);   // validation inside setter
         this.setDiet(diet);
@@ -37,6 +34,7 @@ abstract class Animal {
 
     public abstract String makeSound();
     public abstract double getProduction();
+    public abstract double getPrice();
     
     // ======================================
     // Business Logic Methods (دوال منطق العمل)
@@ -60,11 +58,11 @@ abstract class Animal {
     }
 
     // Check if animal can be sold (هل يمكن بيع الحيوان)
-    public void readyForSell() {
+    public String readyForSell() {
         if (this.isHealthy())
-            System.out.println("✔️ Animal can be sold / يمكن بيع الحيوان");
+           return " ✔️ Animal can be sold / يمكن بيع الحيوان";
         else
-            System.out.println("❌ Animal can't be sold / لا يمكن بيع الحيوان");
+            return " ❌ Animal must be sold immediately // يجب بيع الحيوان فورا";
     }
 
     // Feed animal (تغذية الحيوان)
@@ -75,26 +73,35 @@ abstract class Animal {
     // ======================================
     // Setters (تعديل القيم مع التحقق)
     // ======================================
-    public void setWeight(double weight) {
+    protected void setWeight(double weight) {
         if (weight > 0)
             this.weight = weight;
         else
             System.out.println("❌ Invalid weight / وزن غير صالح");
     }
 
-    public void setPurpose(String purpose) {
+    protected void setPurpose(String purpose) {
         if (purpose != null && !purpose.isEmpty())
             this.purpose = purpose;
         else
             this.purpose = "Unknown";
     }
 
-    public void setDiet(String diet) {
+    protected void setDiet(String diet) {
         if (diet != null && !diet.isEmpty())
             this.diet = diet;
         else
             this.diet = "Unknown";
     }
+
+    protected void setAge(int age){
+        if(age < 0 || age > 100){
+            System.out.println("❌ Invalid Age // عمر غير صالح");
+            this.age = 0;
+        }
+        this.age = age;
+    }
+
 
     // ======================================
     // Getters (استرجاع البيانات)
@@ -111,10 +118,8 @@ abstract class Animal {
         if(getAge() > 10) this.healthScore -= 10;
         return this.healthScore;
     }
-    // Calculate age (حساب العمر)
     public int getAge() {
-        if (birthDate == null) return 0;
-        return LocalDate.now().getYear() - birthDate.getYear();
+        return this.age;
     }
 
     // ======================================
