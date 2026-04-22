@@ -1,17 +1,16 @@
 
 // Class Sheep (تمثيل الخروف)
 // ======================================
-import java.time.LocalDate;
 
 public class Sheep extends Animal {
 
     // ======================================
     // Constructor (بناء كائن الخروف)
     // ======================================
-    Sheep(LocalDate birthDate, double weight) {
+    Sheep(double weight, int age) {
 
         // Call parent constructor
-        super(birthDate, weight, "Barley", "meat, wool");
+        super(weight, age, "Barley", "meat, wool");
     }
 
     private double calculateMeat() {
@@ -43,12 +42,18 @@ public class Sheep extends Animal {
         return 0;
     }
 
+    // Calculate Price (حساب سعر الحيوان)
+    @Override
+    public double getPrice(){
+        return weight * 6 * (getHealthScore()/100.0);
+    }
+
     // صوت الخروف
     @Override
     public String makeSound() {
         if (this.isHealthy())
             return "🐑 Baa";
         else
-            return " weak sound";
+            return " Silence";
     }
 }
