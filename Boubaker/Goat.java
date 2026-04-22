@@ -1,20 +1,18 @@
 
 // Class Goat (تمثيل الماعز)
 // ======================================
-import java.time.LocalDate;
 
 public class Goat extends Animal {
-    
-    private double milkPerDay; // لتر حليب يوميا
+    private double milkPerDay;
 
     // ======================================
     // Constructor (بناء كائن الماعز)
     // ======================================
-    Goat(LocalDate birthDate, double weight, double milkPerDay) {
+    Goat(double weight, int age) {
 
         // Call parent constructor
-        super(birthDate, weight, "Grass", "milk, meat");
-        this.milkPerDay = milkPerDay;
+        super(weight, age, "Grass", "milk, meat");
+        this.milkPerDay = 5; // 5 لتر يوميا 
     }
     // ======================================
     // Override Method
@@ -30,12 +28,18 @@ public class Goat extends Animal {
         return this.milkPerDay;
     }
 
+    // Calculate Price (حساب سعر الحيوان)
+    @Override
+    public double getPrice(){
+        return weight * 5.5 * (getHealthScore() /100.0);
+    }
+
     // صوت الماعز
     @Override
     public String makeSound() {
         if (this.isHealthy())
             return "🐐 Maa";
         else
-            return " weak sound";
+            return " Silence";
     }
 }
