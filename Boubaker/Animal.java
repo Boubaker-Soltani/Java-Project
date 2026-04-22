@@ -6,12 +6,12 @@ abstract class Animal {
     // ======================================
     protected static int counter = 1; // Counter for auto ID (عداد لإنشاء ID تلقائي)
     protected int id;
-    protected double weight;
-    protected String diet;
-    protected String purpose;
-    protected boolean alive;
-    protected int age;
-    protected int healthScore;
+    protected double weight; // الوزن
+    protected String diet; // نوع الغذاء
+    protected String purpose; // ماذا ينتج الحيوان
+    protected boolean alive; // الحيوان حي ام ميت
+    protected int age; // العمر
+    protected int healthScore; // ممستوى صحة الحيوان
 
     // ======================================
     // Constructor (بناء الكائن)
