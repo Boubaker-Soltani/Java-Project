@@ -1,21 +1,18 @@
 
 // Class Cow (تمثيل البقرة)
 // ======================================
-import java.time.LocalDate;
 
 public class Cow extends Animal {
-    
     private double milkPerDay; // لتر حليب يوميا
-    
     // ======================================
     // Constructor (بناء كائن البقرة)
     // ======================================
 
-    Cow(LocalDate birthDate, double weight, double milkPerDay) {
+    Cow(double weight, int age) {
 
         // Call parent constructor (استدعاء الكلاس الأب Animal)
-        super(birthDate, weight, "Barley, corn", "milk");
-        this.milkPerDay = milkPerDay;
+        super (weight, age, "Barley, corn", "milk");
+        this.milkPerDay = 10; // 10 لتر يوميا
     }
 
     // ======================================
@@ -32,12 +29,18 @@ public class Cow extends Animal {
         return this.milkPerDay;
     }
 
+    // Calculate Price (حساب سعر الحيوان)
+    @Override
+    public double getPrice(){
+        return weight * 6 * (getHealthScore()  /100.0);
+    }
+
     // صوت البقرة
     @Override
     public String makeSound() {
         if (this.isHealthy())
             return "🐄 Moo";
         else
-            return " weak sound";
+            return " Silence";
     }
 }
