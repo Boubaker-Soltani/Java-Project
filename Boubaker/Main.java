@@ -1,305 +1,346 @@
 import java.time.LocalDate;
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
 
+// ======================================
+// MAIN CLASS (الكلاس الرئيسي)
+// ======================================
 public class Main {
+
     public static void main(String[] args) {
 
+        // Scanner for user input (أداة قراءة إدخال المستخدم)
         Scanner input = new Scanner(System.in);
-        boolean isRunning = true;
-        ArrayList<Animal> animals = new ArrayList<>();
-        ArrayList<Employee> employees = new ArrayList<>();
-        ArrayList<SmartFeedStock> feedStocks = new ArrayList<>();
-        ArrayList<Operation> operations = new ArrayList<>();
 
+        // System state (حالة تشغيل البرنامج)
+        boolean isRunning = true;
+
+        // Data storage (تخزين البيانات)
+        ArrayList<Animal> animals = new ArrayList<>();     // قائمة الحيوانات
+        ArrayList<Employee> employees = new ArrayList<>(); // قائمة الموظفين
+        ArrayList<SmartFeedStock> feedStocks = new ArrayList<>(); // قائمة الأعلاف
+
+        // Veterinarian instance (كائن الطبيب البيطري)
+        Veterinarian vet = new Veterinarian("Ali", "0550000000", "General", 5);
+
+        // ======================================
+        // MAIN LOOP (الحلقة الرئيسية للنظام)
+        // ======================================
         while (isRunning) {
-            System.out.println("\n==================================================");
-            System.out.println("                FARM MANAGEMENT SYSTEM");
-            System.out.println("==================================================");
-            System.out.println("1.Employees Manegment");
-            System.out.println("2.Animals Manegment");
-            System.out.println("3.Feed Manegment");
-            System.out.println("4.Buy/Sell Operation Manegment");
-            System.out.println("5.Exit");
+
+            // Main menu UI (واجهة القائمة الرئيسية)
+            System.out.println("\n==================================");
+            System.out.println("        FARM MANAGEMENT SYSTEM");
+            System.out.println("==================================");
+
+            System.out.println("1. Employees Management");
+            System.out.println("2. Animals Management");
+            System.out.println("3. Feed Management");
+            System.out.println("4. Buy/Sell Operations");
+            System.out.println("5. Exit");
+
+            // Get validated choice (اختيار مع تحقق)
             int choice = selectChoice(5, input);
+
             switch (choice) {
-                case 1 -> { // Employee Manegment
-                    employeeMenu: while (true) {
-                        System.out.println("1.Add new Employee");
-                        System.out.println("2.view employees records");
-                        System.out.println("3.Delete employee");
-                        System.out.println("4.Search for Employee");
-                        System.out.println("5.exit");
-                        choice = selectChoice(5, input);
+
+                // ======================================
+                // EMPLOYEE MENU (إدارة الموظفين)
+                // ======================================
+                case 1 -> {
+                    employeeMenu: // label للخروج من الحلقة
+                    while (true) {
+
+                        System.out.println("\n--- EMPLOYEE MENU ---");
+                        System.out.println("1. Add Employee");
+                        System.out.println("2. Show Employees");
+                        System.out.println("3. Delete Employee");
+                        System.out.println("4. Exit");
+
+                        choice = selectChoice(4, input);
 
                         switch (choice) {
-                            case 1 -> {
-                                addEmployee(employees, input);
-                            }
-                            case 2 -> {
-                                ShowEmployees(employees);
-                            }
+
+                            // إضافة موظف جديد
+                            case 1 -> addEmployee(employees, input);
+
+                            // عرض جميع الموظفين
+                            case 2 -> showEmployees(employees);
+
+                            // حذف موظف حسب ID
                             case 3 -> {
-                                System.out.print("Enter employee Id : ");
+                                System.out.print("Enter ID: ");
                                 int id = input.nextInt();
                                 removeEmployee(employees, id);
                             }
-                            case 4 -> {
-                                System.out.print("Enter Id of employee : ");
-                                int id = input.nextInt();
-                                int index = findEmployeeIndex(employees, id);
-                                if (index == -1) {
-                                    System.out.println("\ncan't find employee!\n");
-                                    break;
-                                }
-                                Employee emp = employees.get(index);
-                                System.out.println("1.Show deitals");
-                                System.out.println("2.Assign task");
-                                System.out.println("3.Promote");
-                                System.out.println("4.Years of service");
-                                System.out.println("5.exit");
-                                choice = selectChoice(5, input);
-                                switch (choice) {
-                                    case 1 -> {
-                                        System.out.println(emp);
-                                    }
-                                    case 2 -> {
-                                        emp.assignTask();
-                                    }
-                                    case 3 -> {
-                                        System.out.print("Enter new role : ");
-                                        input.nextLine(); // تنظيف buffer
-                                        String newRole = input.nextLine();
-                                        System.out.print("Enter increase Percent : ");
-                                        double increasePercent = input.nextDouble();
-                                        emp.promote(newRole, increasePercent);
-                                    }
-                                    case 4 -> {
-                                        System.out.println(emp.getYearsOfService());
-                                    }
-                                    case 5 -> {
-                                    }
 
-                                }
-
-                            }
-                            case 5 -> {
-                                break employeeMenu;
-                            }
+                            // خروج من القائمة
+                            case 4 -> { break employeeMenu; }
                         }
-
                     }
                 }
+
+                // ======================================
+                // ANIMAL MENU (الحيوانات)
+                // ======================================
                 case 2 -> {
-                } // Animal manegment
-                case 3 -> {
-                } // FeedStock manegemnt
+                    animalMenu:
+                    while (true) {
 
-                case 4 -> { // buy/sell manegement
-                    operationMenu: while (true) {
-                        System.out.println("1.Sell");
-                        System.out.println("2.Buy");
-                        System.out.println("3.exit");
-                        choice = selectChoice(3, input);
+                        System.out.println("\n--- ANIMAL & VETERINARY MENU ---");
+                        System.out.println("1. Show Animals");
+                        System.out.println("2. Diagnose");
+                        System.out.println("3. Treat Animal");
+                        System.out.println("4. Feed Animal");
+                        System.out.println("5. Exit");
+
+                        choice = selectChoice(5, input);
+
                         switch (choice) {
-                            case 1 -> {
-                                System.out.println("\nAviarbles Animals : ");
-                                displayAnimals(animals);
-                                System.out.println("Enter id : ");
-                                int id = input.nextInt();
-                                int index = findAnimalIndex(animals, id);
-                                if (index == -1) {
-                                    System.out.println("\ncan't fina this animal!\n");
-                                    break;
-                                }
-                                Animal animal = animals.get(index);
-                                Operation operation = new Operation();
-                                operation.sell(animal);
-                                operation.showSell();
-                                operations.add(operation);
-                                animals.remove(index);
-                            }
+
+                            // عرض الحيوانات
+                            case 1 -> displayAnimals(animals);
+
+                            // تشخيص الحيوان
                             case 2 -> {
-                                System.out.println("1.Animal");
-                                System.out.println("2.Feed");
-                                choice = selectChoice(2, input);
-                                switch (choice) {
-                                    case 1 -> {
-                                        Operation operation = new Operation();
-                                        System.out.println("Enter type : ");
-                                        System.out.println("1. COW");
-                                        System.out.println("2. SHEEP");
-                                        System.out.println("3. GOAT");
-
-                                        choice = selectChoice(3, input);
-
-                                        AnimalType type = switch (choice) {
-                                            case 1 -> AnimalType.COW;
-                                            case 2 -> AnimalType.SHEEP;
-                                            case 3 -> AnimalType.GOAT;
-                                            default -> null;
-                                        };
-                                        System.out.print("Enter weight : ");
-                                        double weight = input.nextDouble();
-                                        System.out.print("Enter age : ");
-                                        int age = input.nextInt();
-
-                                        Animal animal = operation.buyAnimal(type, weight, age);
-                                        operation.showAnimalPurchase();
-                                        animals.add(animal);
-                                        operations.add(operation);
-                                    }
-                                    case 2 -> {
-                                        System.out.print("Enter feed type: ");
-                                        System.out.println("Enter type : ");
-                                        System.out.println("1. BARLEY");
-                                        System.out.println("2. CORN");
-                                        System.out.println("3. GRASS");
-
-                                        choice = selectChoice(3, input);
-
-                                        FeedType type = switch (choice) {
-                                            case 1 -> FeedType.BARLEY;
-                                            case 2 -> FeedType.CORN;
-                                            case 3 -> FeedType.GRASS;
-                                            default -> null;
-                                        };
-
-                                        System.out.print("Enter quantity (kg): ");
-                                        double quantity = input.nextDouble();
-
-                                        System.out.print("Enter minimum threshold: ");
-                                        double minThreshold = input.nextDouble();
-
-                                        System.out.print("Enter price per kg: ");
-                                        double price = input.nextDouble();
-
-                                        System.out.print("Enter quality (0-100): ");
-                                        int quality = input.nextInt();
-
-                                        System.out.print("Enter expiry year: ");
-                                        int year = input.nextInt();
-
-                                        System.out.print("Enter expiry month: ");
-                                        int month = input.nextInt();
-
-                                        System.out.print("Enter expiry day: ");
-                                        int day = input.nextInt();
-                                        input.nextLine(); // تنظيف buffer
-
-                                        System.out.print("Enter storage location: ");
-                                        String location = input.nextLine();
-                                        Operation operation = new Operation();
-                                        SmartFeedStock feed = operation.buyFeed(type, quantity, minThreshold, price,
-                                                quality, LocalDate.of(year, month, day), location);
-                                        operation.showFeedPurchase();
-                                        feedStocks.add(feed);
-                                        operations.add(operation);
-                                    }                                    
-                                    case 3 -> { break operationMenu; }
-
+                                Animal a = findAnimal(animals, input);
+                                if (a != null) {
+                                    System.out.println("Diagnosis: " + vet.diagnose(a));
                                 }
                             }
+
+                            // علاج الحيوان
                             case 3 -> {
-                                displayOperations(operations);
+                                Animal a = findAnimal(animals, input);
+                                if (a != null) {
+                                    input.nextLine(); // تنظيف buffer
+                                    System.out.print("Medicine: ");
+                                    String med = input.nextLine();
+                                    vet.treatAnimal(a, med);
+                                }
                             }
+
+                            // تغذية الحيوان
                             case 4 -> {
-                                break operationMenu;
+                                Animal a = findAnimal(animals, input);
+                                if (a != null) {
+                                    System.out.print("Food amount: ");
+                                    double food = input.nextDouble();
+                                    a.feed(food);
+                                }
                             }
+
+                            // خروج
+                            case 5 -> { break animalMenu; }
                         }
                     }
                 }
-                case 5 -> {
-                    isRunning = false;
-                } // exit
 
+                // ======================================
+                // FEED MENU (إدارة الأعلاف)
+                // ======================================
+                case 3 -> {
+                    feedMenu:
+                    while (true) {
+
+                        System.out.println("\n--- FEED MENU ---");
+                        System.out.println("1. Show Feed");
+                        System.out.println("2. Consume Feed");
+                        System.out.println("3. Exit");
+
+                        choice = selectChoice(3, input);
+
+                        switch (choice) {
+
+                            // عرض كل الأعلاف
+                            case 1 -> feedStocks.forEach(System.out::println);
+
+                            // استهلاك علف
+                            case 2 -> {
+                                System.out.print("Index: ");
+                                int i = input.nextInt();
+
+                                // تحقق من صحة index
+                                if (i >= 0 && i < feedStocks.size()) {
+                                    System.out.print("Amount: ");
+                                    double a = input.nextDouble();
+                                    feedStocks.get(i).consumeFeed(a);
+                                }
+                            }
+
+                            // خروج
+                            case 3 -> { break feedMenu; }
+                        }
+                    }
+                }
+
+                // ======================================
+                // OPERATIONS MENU (عمليات البيع والشراء)
+                // ======================================
+                case 4 -> {
+                    operationMenu:
+                    while (true) {
+
+                        System.out.println("\n--- BUY / SELL MENU ---");
+                        System.out.println("1. Sell Animal");
+                        System.out.println("2. Buy Animal");
+                        System.out.println("3. Buy Feed");
+                        System.out.println("4. Exit");
+
+                        choice = selectChoice(4, input);
+
+                        switch (choice) {
+
+                            // بيع حيوان
+                            case 1 -> {
+                                Animal a = findAnimal(animals, input);
+
+                                if (a != null) {
+                                    Operation op = new Operation();
+
+                                    op.sell(a); // تنفيذ البيع
+
+                                    animals.remove(a); // حذف من المزرعة
+
+                                    System.out.println(op.showSell()); // طباعة الفاتورة
+                                }
+                            }
+
+                            // شراء حيوان
+                            case 2 -> {
+                                System.out.println("1.COW 2.SHEEP 3.GOAT");
+
+                                int c = selectChoice(3, input);
+
+                                // تحويل الاختيار إلى enum
+                                AnimalType type = switch (c) {
+                                    case 1 -> AnimalType.COW;
+                                    case 2 -> AnimalType.SHEEP;
+                                    case 3 -> AnimalType.GOAT;
+                                    default -> null;
+                                };
+
+                                System.out.print("Weight: ");
+                                double w = input.nextDouble();
+
+                                System.out.print("Age: ");
+                                int age = input.nextInt();
+
+                                Operation op = new Operation();
+
+                                Animal animal = op.buyAnimal(type, w, age);
+
+                                animals.add(animal); // إضافة للمزرعة
+
+                                System.out.println(op.showAnimalPurchase());
+                            }
+
+                            // شراء علف
+                            case 3 -> {
+                                System.out.println("1.BARLEY 2.CORN 3.GRASS");
+
+                                int c = selectChoice(3, input);
+
+                                FeedType type = switch (c) {
+                                    case 1 -> FeedType.BARLEY;
+                                    case 2 -> FeedType.CORN;
+                                    case 3 -> FeedType.GRASS;
+                                    default -> null;
+                                };
+
+                                System.out.print("Quantity: ");
+                                double q = input.nextDouble();
+
+                                System.out.print("Min threshold: ");
+                                double min = input.nextDouble();
+
+                                System.out.print("Price/kg: ");
+                                double price = input.nextDouble();
+
+                                System.out.print("Quality: ");
+                                int quality = input.nextInt();
+
+                                SmartFeedStock feed = new Operation().buyFeed(
+                                        type, q, min, price, quality,
+                                        LocalDate.now().plusDays(30), "Storage A"
+                                );
+
+                                feedStocks.add(feed);
+
+                                System.out.println("Feed purchased successfully");
+                            }
+
+                            case 4 -> { break operationMenu; }
+                        }
+                    }
+                }
+
+                // إنهاء البرنامج
+                case 5 -> isRunning = false;
             }
-
         }
 
-        input.close();
-
+        input.close(); // غلق Scanner
     }
 
-    static int selectChoice(int numChoices, Scanner input) {
-        System.out.print("Enter your choice : ");
-        int choice;
+    // ======================================
+    // UTIL METHODS (دوال مساعدة)
+    // ======================================
+
+    // اختيار مع تحقق (validated input)
+    static int selectChoice(int max, Scanner input) {
+        int c;
         do {
-            choice = input.nextInt();
-            if (choice <= 0 || choice > numChoices)
-                System.out.print("Invalid choice! enter again : ");
-        } while (choice <= 0 || choice > numChoices);
-        return choice;
+            System.out.print("Enter choice: ");
+            c = input.nextInt();
+        } while (c < 1 || c > max);
+        return c;
     }
 
-    // String name, String role, String phone, double salary
-    static void addEmployee(ArrayList<Employee> List, Scanner input) {
-        System.out.print("name : ");
+    // إضافة موظف
+    static void addEmployee(ArrayList<Employee> list, Scanner input) {
         input.nextLine();
+
+        System.out.print("Name: ");
         String name = input.nextLine();
-        // input.nextLine();
-        System.out.print("role : ");
-        // input.nextLine();
+
+        System.out.print("Role: ");
         String role = input.nextLine();
-        // input.nextLine();
-        System.out.print("phone : ");
-        // input.nextLine();
+
+        System.out.print("Phone: ");
         String phone = input.nextLine();
-        System.out.print("salary : ");
+
+        System.out.print("Salary: ");
         double salary = input.nextDouble();
 
-        List.add(new Employee(name, role, phone, salary));
-
+        list.add(new Employee(name, role, phone, salary));
     }
 
-    static void removeEmployee(ArrayList<Employee> employees, int id) {
-        boolean removed = employees.removeIf(emp -> emp.getId() == id);
-        if (removed)
-            System.out.println("Employee[id : " + id + "] has been removed\n");
-        else
-            System.out.println("!can't find employee[id : " + id + "]\n");
+    // حذف موظف حسب ID
+    static void removeEmployee(ArrayList<Employee> list, int id) {
+        list.removeIf(e -> e.getId() == id);
     }
 
-    static void ShowEmployees(ArrayList<Employee> employees) {
-        for (Employee employee : employees) {
-            System.out.println(employee);
-
-        }
+    // عرض الموظفين
+    static void showEmployees(ArrayList<Employee> list) {
+        list.forEach(System.out::println);
     }
 
-    static int findEmployeeIndex(ArrayList<Employee> employees, int id) {
-
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getId() == id) {
-                return i; // رجعنا index
-            }
-        }
-
-        return -1; // غير موجود
+    // عرض الحيوانات
+    static void displayAnimals(ArrayList<Animal> list) {
+        list.forEach(System.out::println);
     }
 
-    static void displayAnimals(ArrayList<Animal> animals) {
-        for (Animal animal : animals) {
-            System.out.println(animal);
-        }
+    // البحث عن حيوان حسب ID
+    static Animal findAnimal(ArrayList<Animal> list, Scanner input) {
+        System.out.print("Enter ID: ");
+        int id = input.nextInt();
+
+        for (Animal a : list)
+            if (a.getId() == id)
+                return a;
+
+        System.out.println("Not found!");
+        return null;
     }
-
-    static int findAnimalIndex(ArrayList<Animal> animals, int id) {
-        for (int i = 0; i < animals.size(); i++) {
-            if (animals.get(i).getId() == id) {
-                return i; // رجعنا index
-            }
-        }
-
-        return -1; // غير موجود
-    }
-
-    static void displayOperations(ArrayList<Operation> operations) {
-        for (Operation operation : operations) {
-                System.out.println(operation.showAnimalPurchase());
-                System.out.println(operation.showFeedPurchase());
-                System.out.println(operation.showSell());
-        }
-    }
-
 }
