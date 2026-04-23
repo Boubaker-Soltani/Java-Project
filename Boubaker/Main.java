@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        
+
         Scanner input = new Scanner(System.in);
         boolean isRunning = true;
         ArrayList<Animal> animals = new ArrayList<>();
@@ -29,8 +29,9 @@ public class Main {
                         System.out.println("1.Add new Employee");
                         System.out.println("2.view employees records");
                         System.out.println("3.Delete employee");
-                        System.out.println("4.exit");
-                        choice = selectChoice(4, input);
+                        System.out.println("4.Search for Employee");
+                        System.out.println("5.exit");
+                        choice = selectChoice(5, input);
                         
                         switch (choice) {
                             case 1 -> { addEmployee(employees, input); }
@@ -39,7 +40,40 @@ public class Main {
                                         int id = input.nextInt();
                                         removeEmployee(employees, id);
                                     }
-                            case 4 -> { break employeeMenu; }
+                            case 4 ->{
+                                System.out.print("Enter Id of employee : ");
+                                int id = input.nextInt();
+                                int index = findEmployeeIndex(employees, id);
+                                if(index == -1) {
+                                    System.out.println("\ncan't find employee!\n");
+                                    break;   
+                                }
+                                Employee emp = employees.get(index);
+                                System.out.println("1.Show deitals");
+                                System.out.println("2.Assign task");
+                                System.out.println("3.Promote");
+                                System.out.println("4.Years of service");
+                                System.out.println("5.exit");
+                                choice = selectChoice(5, input);
+                                switch (choice) {
+                                    case 1 -> { System.out.println(emp); }
+                                    case 2 -> {emp.assignTask();}
+                                    case 3 -> { 
+                                        System.out.print("Enter new role : ");
+                                        input.nextLine(); // تنظيف buffer
+                                        String newRole = input.nextLine();
+                                        System.out.print("Enter increase Percent : ");
+                                        double increasePercent = input.nextDouble();
+                                        emp.promote(newRole, increasePercent);
+                                    }
+                                    case 4 -> { System.out.println(emp.getYearsOfService());}
+                                    case 5 -> { }
+                                    
+                                
+                                }
+
+                            }        
+                            case 5 -> { break employeeMenu; }
                         }
                             
                             
@@ -103,4 +137,16 @@ public class Main {
 
             }
     }
+
+    static int findEmployeeIndex(ArrayList<Employee> employees, int id){
+
+        for(int i = 0; i < employees.size(); i++){
+            if(employees.get(i).getId() == id){
+                return i; // رجعنا index
+            }
+        }
+
+        return -1; // غير موجود
+}
+    
 }
