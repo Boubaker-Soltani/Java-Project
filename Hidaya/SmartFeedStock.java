@@ -1,31 +1,32 @@
 import java.time.LocalDate;
-import java.util.Random; 
+import java.util.Random;
+
 // Classe SmartFeedStock (مخزون الأعلاف الذكي)
 // ======================================
 public class SmartFeedStock {
     // 🔒 ID automatique
     private static int counter = 1;
     private int id;
-    private String name;           // نوع العلف
-    private double quantity;       // الكمية (kg)
-    private double minThreshold;   // الحد الأدنى
-    private double pricePerKg;     // السعر
-    private int quality;           // جودة العلف (0 - 100)
-    private LocalDate expiryDate;  // تاريخ الصلاحية
-    private String storageLocation;
+    private String type; // نوع العلف
+    private double quantity; // الكمية (kg)
+    private double minThreshold; // الحد الأدنى
+    private double pricePerKg; // السعر
+    private int quality; // جودة العلف (0 - 100)
+    private LocalDate expiryDate; // تاريخ الصلاحية
+    private String storageLocation; // مكان التخزين
     // 📊 إحصائيات
-    private double totalConsumed;
+    private double totalConsumed; // إجمالي الإستهلاك
     private int daysTracked;
 
     // ======================================
     // Constructor
     // ======================================
-    public SmartFeedStock(String name, double quantity, double minThreshold,
-                          double pricePerKg, int quality,
-                          LocalDate expiryDate, String location) {
+    public SmartFeedStock(String type, double quantity, double minThreshold,
+            double pricePerKg, int quality,
+            LocalDate expiryDate, String location) {
 
         this.id = counter++;
-        this.name = name;
+        this.type = type;
         this.quantity = quantity;
         this.minThreshold = minThreshold;
         this.pricePerKg = pricePerKg;
@@ -42,7 +43,7 @@ public class SmartFeedStock {
     // ======================================
     public void addFeed(double amount) {
         quantity += amount;
-        System.out.println("✅ Added " + amount + " kg of " + name);
+        System.out.println("✅ Added " + amount + " kg of " + type);
     }
 
     // ======================================
@@ -57,7 +58,7 @@ public class SmartFeedStock {
         quantity -= amount;
         totalConsumed += amount;
 
-        System.out.println("🐄 Consumed " + amount + " kg of " + name);
+        System.out.println("🐄 Consumed " + amount + " kg of " + type);
     }
 
     // ======================================
@@ -66,11 +67,11 @@ public class SmartFeedStock {
     public void checkAlerts() {
 
         if (quantity <= minThreshold) {
-            System.out.println("⚠ LOW STOCK: " + name);
+            System.out.println("⚠ LOW STOCK: " + type);
         }
 
         if (expiryDate.isBefore(LocalDate.now())) {
-            System.out.println("❌ EXPIRED: " + name);
+            System.out.println("❌ EXPIRED: " + type);
         }
 
         if (quality < 40) {
@@ -84,7 +85,7 @@ public class SmartFeedStock {
     public void suggestRestock() {
         if (quantity < minThreshold) {
             double needed = (minThreshold * 2) - quantity;
-            System.out.println("💡 Suggest buying " + needed + " kg of " + name);
+            System.out.println("💡 Suggest buying " + needed + " kg of " + type);
         }
     }
 
@@ -99,7 +100,8 @@ public class SmartFeedStock {
     // 📈 تحليل الاستهلاك
     // ======================================
     public double getAverageConsumption() {
-        if (daysTracked == 0) return 0;
+        if (daysTracked == 0)
+            return 0;
         return totalConsumed / daysTracked;
     }
 
@@ -115,7 +117,8 @@ public class SmartFeedStock {
 
         // تدهور الجودة مع الوقت
         quality -= r.nextInt(3);
-        if (quality < 0) quality = 0;
+        if (quality < 0)
+            quality = 0;
 
         daysTracked++;
 
@@ -126,29 +129,37 @@ public class SmartFeedStock {
     // 🧠 تأثير العلف على الحيوان
     // ======================================
     public int getHealthImpact() {
-        if (quality > 80) return +10;
-        if (quality > 50) return +5;
-        if (quality > 30) return 0;
+        if (quality > 80)
+            return +10;
+        if (quality > 50)
+            return +5;
+        if (quality > 30)
+            return 0;
         return -10;
     }
 
     // ======================================
     // 🔍 Getters
     // ======================================
-    public String getName() { return name; }
+    public int getId() { return id;}
+    public String gettype() { return type; }
     public double getQuantity() { return quantity; }
     public int getQuality() { return quality; }
+    public double getPrice(){ return quantity * pricePerKg; }
+    public LocalDate getExpiryDate() { return expiryDate; }
+    public String getStorageLocation() { return storageLocation; }
+    public double getPricePerKg() { return pricePerKg; }
 
     // ======================================
     // عرض
     // ======================================
     @Override
     public String toString() {
-        return "Feed: " + name +
-               " | Qty: " + quantity + "kg" +
-               " | Quality: " + quality +
-               " | Price: " + pricePerKg +
-               " | Location: " + storageLocation +
-               " | Expiry: " + expiryDate;
+        return "Feed: " + type +
+                " | Qty: " + quantity + "kg" +
+                " | Quality: " + quality +
+                " | Price: " + pricePerKg +
+                " | Location: " + storageLocation +
+                " | Expiry: " + expiryDate;
     }
 }
