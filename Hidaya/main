@@ -5,7 +5,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        // إنشاء طبيب بيطري
+ 
         Veterinarian vet = new Veterinarian("Ali", "0551234567", "General", 5);
 
         int choice = 0;
