@@ -14,7 +14,7 @@ public class Operation {
     private double price;   // Price of operation (السعر)
     private double quantity; // Quantity (الكمية)
     private Animal animal;  // Related animal (الحيوان المرتبط بالعملية)
-    private SmartFeedStock feed;
+    private SmartFeedStock feed; // Related feed (العلف المرتبط بالعملية)
     // ======================================
     // Constructor (بناء الكائن)
     // ======================================
