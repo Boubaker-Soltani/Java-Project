@@ -1,0 +1,79 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // إنشاء طبيب بيطري
+        Veterinarian vet = new Veterinarian("Ali", "0551234567", "General", 5);
+
+        int choice = 0;
+
+        do {
+            System.out.println("\n===== MENU =====");
+            System.out.println("1. Diagnose Animal");
+            System.out.println("2. Add Appointment");
+            System.out.println("3. Show Statistics");
+            System.out.println("4. Exit");
+            System.out.print("Choose: ");
+
+            // التحقق من الإدخال
+            if (!sc.hasNextInt()) {
+                System.out.println("❌ Please enter a number");
+                sc.next(); // تنظيف الإدخال الخاطئ
+                continue;
+            }
+
+            choice = sc.nextInt();
+            sc.nextLine(); // تنظيف buffer
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter health score (0-100): ");
+
+                    if (!sc.hasNextInt()) {
+                        System.out.println("❌ Invalid number");
+                        sc.next();
+                        break;
+                    }
+
+                    int health = sc.nextInt();
+                    sc.nextLine(); // تنظيف
+
+                    Animal a = new Animal("Animal", health);
+                    String result = vet.diagnose(a);
+
+                    System.out.println("Diagnosis: " + result);
+                    break;
+
+                case 2:
+                    System.out.print("Enter appointment: ");
+                    String app = sc.nextLine();
+
+                    if (app.isEmpty()) {
+                        System.out.println("❌ Empty appointment");
+                    } else {
+                        vet.addAppointment(app);
+                        System.out.println("✅ Added successfully");
+                    }
+                    break;
+
+                case 3:
+                    vet.showStats();
+                    break;
+
+                case 4:
+                    System.out.println("👋 Goodbye!");
+                    break;
+
+                default:
+                    System.out.println("❌ Invalid choice");
+            }
+
+        } while (choice != 4);
+
+        sc.close();
+    }
+}
