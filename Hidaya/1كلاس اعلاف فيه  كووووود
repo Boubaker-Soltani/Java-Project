@@ -1,0 +1,234 @@
+import java.time.LocalDate;
+import java.util.Scanner;
+public class Main {
+
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<SmartFeedStock> stocks = new ArrayList<>();
+
+    public static void main(String[] args) {
+
+        int choice;
+
+        do {
+            showMenu();
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1: addStock(); break;
+                case 2: showStocks(); break;
+                case 3: addQuantity(); break;
+                case 4: consumeFeed(); break;
+                case 5: simulateAll(); break;
+                case 6: checkAllAlerts(); break;
+                case 7: updateStock(); break;
+                case 8: deleteStock(); break;
+                case 9: searchByType(); break;
+                case 10: statistics(); break;
+                case 11: sortStocks(); break;
+                case 12: urgentFeeds(); break;
+                case 0: System.out.println("👋 Exit"); break;
+                default: System.out.println("❌ Invalid choice");
+            }
+
+        } while (choice != 0);
+    }
+
+    // ================= MENU =================
+    public static void showMenu() {
+        System.out.println("\n===== SMART FARM PRO SYSTEM =====");
+        System.out.println("1. Add Feed");
+        System.out.println("2. Show All");
+        System.out.println("3. Add Quantity (Purchase)");
+        System.out.println("4. Consume Feed");
+        System.out.println("5. Simulate Day");
+        System.out.println("6. Alerts");
+        System.out.println("7. Update Feed");
+        System.out.println("8. Delete Feed");
+        System.out.println("9. Search");
+        System.out.println("10. Statistics");
+        System.out.println("11. Sort");
+        System.out.println("12. Urgent Feeds");
+        System.out.println("0. Exit");
+        System.out.print("Choose: ");
+    }
+
+    // ================= ADD =================
+    public static void addStock() {
+        System.out.print("Type: ");
+        String type = sc.nextLine();
+
+        System.out.print("Quantity: ");
+        double qty = sc.nextDouble();
+
+        System.out.print("Min threshold: ");
+        double min = sc.nextDouble();
+
+        System.out.print("Price: ");
+        double price = sc.nextDouble();
+
+        System.out.print("Quality: ");
+        int quality = sc.nextInt();
+
+        System.out.print("Year: ");
+        int y = sc.nextInt();
+        System.out.print("Month: ");
+        int m = sc.nextInt();
+        System.out.print("Day: ");
+        int d = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Location: ");
+        String loc = sc.nextLine();
+
+        stocks.add(new SmartFeedStock(type, qty, min, price, quality,
+                LocalDate.of(y, m, d), loc));
+
+        System.out.println("✔ Feed added!");
+    }
+
+    // ================= SHOW =================
+    public static void showStocks() {
+        if (stocks.isEmpty()) {
+            System.out.println("No stocks!");
+            return;
+        }
+
+        for (SmartFeedStock s : stocks) {
+            System.out.println("ID: " + s.getId() + " -> " + s);
+        }
+    }
+
+    // ================= FIND =================
+    public static SmartFeedStock find(int id) {
+        for (SmartFeedStock s : stocks)
+            if (s.getId() == id) return s;
+        return null;
+    }
+
+    // ================= PURCHASE =================
+    public static void addQuantity() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+
+        SmartFeedStock s = find(id);
+        if (s != null) {
+            System.out.print("Amount to buy: ");
+            double q = sc.nextDouble();
+            s.addFeed(q);
+        } else System.out.println("Not found!");
+    }
+
+    // ================= CONSUME =================
+    public static void consumeFeed() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+
+        SmartFeedStock s = find(id);
+        if (s != null) {
+            System.out.print("Amount: ");
+            double q = sc.nextDouble();
+            s.consumeFeed(q);
+        } else System.out.println("Not found!");
+    }
+
+    // ================= UPDATE =================
+    public static void updateStock() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        SmartFeedStock s = find(id);
+
+        if (s != null) {
+            System.out.println("1. Change price");
+            System.out.println("2. Change location");
+            System.out.println("3. Change quality");
+
+            int ch = sc.nextInt();
+
+            switch (ch) {
+                case 1:
+                    System.out.print("New price: ");
+                    s.setPricePerKg(sc.nextDouble());
+                    break;
+                case 2:
+                    sc.nextLine();
+                    System.out.print("New location: ");
+                    s.setStorageLocation(sc.nextLine());
+                    break;
+                case 3:
+                    System.out.print("New quality: ");
+                    s.setQuality(sc.nextInt());
+                    break;
+            }
+
+            System.out.println("✔ Updated!");
+        } else System.out.println("Not found!");
+    }
+
+    // ================= DELETE =================
+    public static void deleteStock() {
+        System.out.print("Enter ID: ");
+        int id = sc.nextInt();
+
+        SmartFeedStock s = find(id);
+        if (s != null) {
+            stocks.remove(s);
+            System.out.println("🗑 Deleted!");
+        } else System.out.println("Not found!");
+    }
+
+    // ================= SEARCH =================
+    public static void searchByType() {
+        System.out.print("Type: ");
+        String t = sc.nextLine();
+
+        for (SmartFeedStock s : stocks)
+            if (s.gettype().equalsIgnoreCase(t))
+                System.out.println(s);
+    }
+
+    // ================= STATISTICS =================
+    public static void statistics() {
+        double total = 0, value = 0;
+
+        for (SmartFeedStock s : stocks) {
+            total += s.getQuantity();
+            value += s.calculateStockValue();
+        }
+
+        System.out.println("Total Quantity: " + total);
+        System.out.println("Total Value: " + value);
+    }
+
+    // ================= SORT =================
+    public static void sortStocks() {
+        stocks.sort(Comparator.comparingDouble(SmartFeedStock::getQuantity));
+        System.out.println("✔ Sorted!");
+    }
+
+    // ================= URGENT =================
+    public static void urgentFeeds() {
+        for (SmartFeedStock s : stocks) {
+            if (s.getQuantity() < 10 || s.getQuality() < 40) {
+                System.out.println("⚠ " + s);
+            }
+        }
+    }
+
+    // ================= SIMULATION =================
+    public static void simulateAll() {
+        for (SmartFeedStock s : stocks) {
+            s.simulateDay();
+            System.out.println(s);
+        }
+    }
+
+    // ================= ALERTS =================
+    public static void checkAllAlerts() {
+        for (SmartFeedStock s : stocks)
+            s.checkAlerts();
+    }
+}
+
