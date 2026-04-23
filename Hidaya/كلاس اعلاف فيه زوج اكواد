@@ -1,0 +1,185 @@
+import java.time.LocalDate;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // ======================================
+        // 🧾 إدخال بيانات العلف من المستخدم
+        // ======================================
+        System.out.print("Enter feed type: ");
+        String type = sc.nextLine();
+
+        System.out.print("Enter quantity (kg): ");
+        double quantity = sc.nextDouble();
+
+        System.out.print("Enter minimum threshold: ");
+        double minThreshold = sc.nextDouble();
+
+        System.out.print("Enter price per kg: ");
+        double price = sc.nextDouble();
+
+        System.out.print("Enter quality (0-100): ");
+        int quality = sc.nextInt();
+
+        System.out.print("Enter expiry year: ");
+        int year = sc.nextInt();
+
+        System.out.print("Enter expiry month: ");
+        int month = sc.nextInt();
+
+        System.out.print("Enter expiry day: ");
+        int day = sc.nextInt();
+        sc.nextLine(); // تنظيف buffer
+
+        System.out.print("Enter storage location: ");
+        String location = sc.nextLine();
+
+        // ======================================
+        // 🐄 إنشاء الكائن
+        // ======================================
+        SmartFeedStock feed = new SmartFeedStock(
+                type,
+                quantity,
+                minThreshold,
+                price,
+                quality,
+                LocalDate.of(year, month, day),
+                location
+        );
+
+        System.out.println("\n===== STOCK CREATED =====");
+        System.out.println(feed);
+
+        // ======================================
+        // 🔁 قائمة تفاعلية
+        // ======================================
+        int choice;
+
+        do {
+            System.out.println("\n===== MENU =====");
+            System.out.println("1. Add Feed");
+            System.out.println("2. Consume Feed");
+            System.out.println("3. Check Alerts");
+            System.out.println("4. Suggest Restock");
+            System.out.println("5. Simulate Day");
+            System.out.println("6. Show Stock Info");
+            System.out.println("0. Exit");
+
+            System.out.print("Choose: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter amount to add: ");
+                    double add = sc.nextDouble();
+                    feed.addFeed(add);
+                    break;
+
+                case 2:
+                    System.out.print("Enter amount to consume: ");
+                    double consume = sc.nextDouble();
+                    feed.consumeFeed(consume);
+                    break;
+
+                case 3:
+                    feed.checkAlerts();
+                    break;
+
+                case 4:
+                    feed.suggestRestock();
+                    break;
+
+                case 5:
+                    feed.simulateDay();
+                    break;
+
+                case 6:
+                    System.out.println(feed);
+                    System.out.println("Value: " + feed.calculateStockValue());
+                    break;
+
+                case 0:
+                    System.out.println("👋 Exiting...");
+                    break;
+
+                default:
+                    System.out.println("❌ Invalid choice!");
+            }
+
+        } while (choice != 0);
+
+        sc.close
+=========================================================
+الكود الثاني 
+import java.time.LocalDate;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // ======================================
+        // 🐄 إنشاء مخزون أعلاف
+        // ======================================
+        SmartFeedStock feed = new SmartFeedStock(
+                "Wheat",
+                50,        // quantity
+                20,        // min threshold
+                2.5,       // price per kg
+                85,        // quality
+                LocalDate.of(2026, 12, 31),
+                "Warehouse A"
+        );
+
+        System.out.println("===== INITIAL STOCK =====");
+        System.out.println(feed);
+
+        // ======================================
+        // ➕ إضافة علف
+        // ======================================
+        feed.addFeed(30);
+
+        // ======================================
+        // ➖ استهلاك علف
+        // ======================================
+        feed.consumeFeed(10);
+
+        // ======================================
+        // ⚠️ فحص التنبيهات
+        // ======================================
+        feed.checkAlerts();
+
+        // ======================================
+        // 💡 اقتراح شراء
+        // ======================================
+        feed.suggestRestock();
+
+        // ======================================
+        // 📊 قيمة المخزون
+        // ======================================
+        System.out.println("\n📊 Stock Value: " + feed.calculateStockValue() + " DA");
+
+        // ======================================
+        // 🧠 تأثير الجودة على الحيوان
+        // ======================================
+        System.out.println("🧠 Health Impact: " + feed.getHealthImpact());
+
+        // ======================================
+        // 📈 محاكاة أيام (ذكاء النظام)
+        // ======================================
+        System.out.println("\n===== SIMULATION =====");
+        for (int i = 0; i < 5; i++) {
+            System.out.println("\n--- Day " + (i + 1) + " ---");
+            feed.simulateDay();
+            System.out.println(feed);
+        }
+
+        // ======================================
+        // 📉 معدل الاستهلاك
+        // ======================================
+        System.out.println("\n📉 Average Consumption: "
+                + feed.getAverageConsumption() + " kg/day");
+    }
+}
